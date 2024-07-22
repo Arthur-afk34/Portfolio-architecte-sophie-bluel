@@ -6,7 +6,7 @@ let categoriesWorks = [{
 }];
 
 
-// checkIfConnected();
+checkIfConnected();
 loadFilters();
 loadProjects();
 
