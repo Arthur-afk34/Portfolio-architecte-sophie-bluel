@@ -50,3 +50,105 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+// Coder une fonction que me cree un element figure comme suit
+function createFigureModale(work) {
+    // On crée un élément HTML de type figure
+    const figure = document.createElement("figure");
+    figure.setAttribute("id", "figureModale" + work.id);
+    // On crée un élément HTML de type img et on lui attribue sa source et un texte alternatif
+    const img = document.createElement("img");
+    img.src = work.imageUrl;
+    img.alt = work.title;
+    // On crée un élément HTML de type figcaption pour le titre de l'image et on lui attribue le texte de la légende
+    const figcaption = document.createElement("figcaption");
+    figcaption.textContent = "éditer";
+    figcaption.className = "editer";
+    //Ajouter l'icon trash et aussi un action listener dnas lequel tu affiche l'id de l'element
+    // Crée un élément HTML de type i pour l'icône de suppression
+    const deleteIcon = document.createElement("i");
+    deleteIcon.className = "fas fa-trash-alt delete-icon";
+    // Ajoute un gestionnaire d'événement pour la suppression lorsque l'icône est cliquée
+    deleteIcon.addEventListener("click", function() {
+        const value = confirm(
+            "Etes vous sur de bien vouloir supprimer le projet de numero:" +
+            work.id +
+            " ?"
+        );
+        if (value) {
+            // Appelle une fonction de suppression en utilisant l'ID de l'élément work
+            deleteWork(work.id);
+        }
+    });
+    // On ajoute l'élément img à l'élément figure
+    figure.appendChild(img);
+    // On ajoute l'élément figcaption à l'élément figure
+    figure.appendChild(figcaption);
+    // On ajoute l'élément sdeleteIcon à l'élément figure
+    figure.appendChild(deleteIcon);
+
+    return figure;
+}
+// Afficher la seconde partie de la modale :
+// Récupération de l'élément HTML du bouton "Ajouter une photo"
+const addPhotoButton = document.querySelector(".add-photo");
+// Récupération de l'élément HTML de la fenêtre modale pour ajouter un projet
+const modalAddProject = document.querySelector("#js-modal-add-project");
+// Ajout d'un gestionnaire d'événement pour empêcher la propagation de l'événement de clic sur la fenêtre modale
+modalAddProject.addEventListener("click", function(e) {
+    e.stopPropagation();
+});
+// Récupération de l'élément HTML de la première fenêtre modale
+const firstModal = document.querySelector("#js-modal-first");
+// Ajout d'un gestionnaire d'événement pour afficher la fenêtre modale pour ajouter un projet lorsqu'on clique sur le bouton "Ajouter une photo"
+addPhotoButton.addEventListener("click", function() {
+    modalAddProject.style.display = null;
+    firstModal.style.display = "none";
+});
+// Fonction pour fermer la deuxième modal
+function closeSecondModal() {
+    modalAddProject.style.display = "none";
+    firstModal.style.display = "flex"; // Réafficher la première modal
+}
+
+// Récupération de l'élément de retour à la première modal
+const returnToFirstModalButton =
+    modalAddProject.querySelector(".js-modal-return");
+// Ajout d'un gestionnaire d'événement pour retourner à la première modal
+returnToFirstModalButton.addEventListener("click", closeSecondModal);
+
+// Coder une fonction pour le fetch avec delete et une autre pour fetch en post
+
+function deleteWork(workId) {
+    const token = localStorage.getItem("token"); // Récupérer le jeton d'accès
+    fetch("http://localhost:5678/api/works/" + workId, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Ajouter le jeton d'accès à l'en-tête
+            },
+        })
+        .then(function(response) {
+            // element supprimer
+            if (response.status == 204) {
+                // proceder à :
+                //1/ mettre à jour le tableau global
+                console.log(works);
+                works = works.filter((element) => element.id != workId);
+                console.log(works);
+
+                //2/Agir sur les figures de la page index et enlever l'element supprimeé depuis le dom
+                document.getElementById("figure" + workId).remove();
+                //3/Eliminer aussi l'element supprimer depuis le dom
+                document.getElementById("figureModale" + workId).remove();
+            }
+            if (response.status == 401) {
+                alert(
+                    "Veuillez vous authentifier de nouveau! votre token est expiré !"
+                );
+            }
+        })
+        .catch(function(error) {
+            console.log("Erreur lors de la suppression : " + error.message);
+        });
+}
