@@ -589,7 +589,7 @@ nav a {
 #validerButton {
     background: #A7A7A7;
     border-radius: 60px;
-    padding: 10px 140px 10px 140px;
+    /* padding: 10px 140px 10px 140px; */
     border: none;
     display: flex;
     justify-content: center;
