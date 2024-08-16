@@ -302,11 +302,12 @@ document.querySelector(".modal-form").addEventListener("submit", function(e) {
                     // AJouter le projet à la gallery sur index 
                     const figure = createFigure(projet);
                     document.querySelector(".gallery").appendChild(figure);
-                    // AJouter aussi le projet dnas la modale gallery
+                    // AJouter aussi le projet dans la modale gallery
                     const figureModale = createFigureModale(projet);
                     document.querySelector(".projets-modal").appendChild(figureModale);
                     // retourner sur modale gallery 
                     returnToFirstModalButton.click();
+                    removeImage();
                 }
             })
             .catch((error) => {
