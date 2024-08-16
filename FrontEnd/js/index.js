@@ -259,6 +259,6 @@ const displayLogout = document.getElementById("logout");
 displayLogout.addEventListener("click", () => {
     // Supprime l'élément "token" stocké dans le localStorage du navigateur.
     window.localStorage.removeItem("token");
-    // redirect to offline homepage
+    // redirect to offline homepage 
     window.location.href = "/FrontEnd/index.html";
 });

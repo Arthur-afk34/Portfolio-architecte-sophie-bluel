@@ -64,7 +64,7 @@ function createFigureModale(work) {
     const figcaption = document.createElement("figcaption");
     figcaption.textContent = "éditer";
     figcaption.className = "editer";
-    //Ajouter l'icon trash et aussi un action listener dnas lequel tu affiche l'id de l'element
+    //Ajouter l'icon trash et aussi un action listener dans lequel tu affiche l'id de l'element
     // Crée un élément HTML de type i pour l'icône de suppression
     const deleteIcon = document.createElement("i");
     deleteIcon.className = "fas fa-trash-alt delete-icon";
